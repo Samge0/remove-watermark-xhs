@@ -95,6 +95,17 @@ python remove_watermark_video.py
 
 |before|after|
 |:--------:|:--------:|
-|![before](https://github.com/Samge0/remove-watermark-xhs/assets/17336101/801bdcef-88d7-449d-a48a-428e117b58ab)|![after](https://github.com/Samge0/remove-watermark-xhs/assets/17336101/a465b913-4aa1-4c04-a12b-c0211d47b6bc)|
+|![image](https://github.com/Samge0/remove-watermark-xhs/assets/17336101/a250bd15-2170-4cf3-beee-3472cba65d0e)|![image](https://github.com/Samge0/remove-watermark-xhs/assets/17336101/36ecf5aa-23c3-4abb-b9bb-0d4aa64319eb)|
 
 视频处理的前后对比
+- before
+
+https://github.com/Samge0/remove-watermark-xhs/assets/17336101/c4c3c2b4-4015-485d-9e88-113236a44daa
+
+- after
+
+https://github.com/Samge0/remove-watermark-xhs/assets/17336101/e6a1798e-9ebf-4f4c-9fa3-937ae15a7ef5
+
+
+执行日志信息
+![执行日志信息](https://github.com/Samge0/remove-watermark-xhs/assets/17336101/e159167d-5922-44fe-864d-3887e328a6a1)
