@@ -67,6 +67,27 @@ class IOPaintCmdUtil(BaseIOPaint):
         finally:
             os.remove(temp_mask_path) if os.path.exists(temp_mask_path) else None
 
+    def erase_watermark_batch(self, image_dir, mask_dir, output_dir):
+        os.makedirs(image_dir, exist_ok=True)
+        os.makedirs(mask_dir, exist_ok=True)
+        output_dir = output_dir or output_dir.mkdtemp()
+        os.makedirs(output_dir, exist_ok=True)
+
+        command = [
+            'iopaint', 'run',
+            '--model=lama',
+            f'--device={self.device}',
+            f'--image={image_dir}',
+            f'--mask={mask_dir}',
+            f'--output={output_dir}'
+        ]
+
+        try:
+            subprocess.run(command, check=True)
+            print(f"水印已移除： => {output_dir}")
+        finally:
+            pass
+
 
 class IOPaintApiUtil(BaseIOPaint):
     """

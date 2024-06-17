@@ -64,6 +64,25 @@ python remove_watermark_with_onnx.py
 ```
 
 
+### 运行方式-demo3：
+该demo移除视频的水印，使用IOPaint移除视频的目标水印效果好，但整体耗时大。该demo的基础流程为（耗时为4秒测试视频的耗时）：
+
+- 读取所有视频帧到临时目录（耗时：0.59秒）
+- YOLO识别并创建帧图集对应的遮罩图集目录（耗时：8秒，如果水印位置固定的话，其实可以用固定遮罩而不要为每一帧创建遮罩）
+- IOPaint批量移除水印（耗时：280秒）
+- 合并音视频（耗时3秒）
+- 移除临时文件
+
+这里`4秒`的测试视频[resources/test.mp4](resources/test.mp4)，一共`143帧`，使用IOPaint批量移除水印耗时`280秒`, 耗比`1:70`，整个demo总耗时`291秒`多，效率太低了。
+
+这里暂只提供可行方案，但不太推荐，毕竟这耗时太大了。感觉IOPaint用来处理图片的话还是挺不错的。
+
+`ultralytics + IOPaint（命令行方式）`，[脚本：remove_watermark_video.py](remove_watermark_video.py)
+```shell
+python remove_watermark_video.py
+```
+
+
 ### 错误处理
 > 1、如果遇到`Could not locate zlibwapi.dll. Please make sure it is in your library path`错误，需要下载相关dll放置到目标位置：
 
@@ -77,3 +96,5 @@ python remove_watermark_with_onnx.py
 |before|after|
 |:--------:|:--------:|
 |![before](https://github.com/Samge0/remove-watermark-xhs/assets/17336101/801bdcef-88d7-449d-a48a-428e117b58ab)|![after](https://github.com/Samge0/remove-watermark-xhs/assets/17336101/a465b913-4aa1-4c04-a12b-c0211d47b6bc)|
+
+视频处理的前后对比
