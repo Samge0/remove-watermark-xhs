@@ -1,0 +1,12 @@
+{
+	"name": "remove-watermark-xhs",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "remove-watermark-xhs",
+    "workspaceFolder": "/app",
+    "extensions": [
+        "ms-python.python",
+        "ms-python.debugpy",
+        "humao.rest-client",
+        "samge.vscode-samge-translate"
+    ]
+}
