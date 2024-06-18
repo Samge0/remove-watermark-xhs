@@ -166,3 +166,4 @@ pnnx*
 
 # custom
 !models/*
+.devcontainer/docker-compose.yml
