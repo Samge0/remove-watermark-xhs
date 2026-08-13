@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移除小红书logo水印的demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              400: '#d5e58f',
+              500: '#bad841',
+              600: '#9db830'
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans SC"', '"Inter"', 'system-ui', 'sans-serif'],
+            serif: ['"Noto Serif SC"', '"Manrope"', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    * {
+      font-family: 'Noto Sans SC', 'Inter', system-ui, sans-serif;
+    }
+    
+    h1, h2, h3, h4 {
+      font-family: 'Noto Sans SC', 'Inter', system-ui, sans-serif;
+      font-weight: 700;
+    }
+    
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(186, 216, 65, 0.15);
+      box-shadow: 0 8px 32px rgba(186, 216, 65, 0.1);
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #f8f9e8 0%, #ffffff 50%, #f5f8e8 100%);
+    }
+    
+    .icon-gradient {
+      background: linear-gradient(135deg, #bad841 0%, #9db830 100%);
+    }
+    
+    .text-gradient {
+      background: linear-gradient(135deg, #bad841 0%, #9db830 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    summary::-webkit-details-marker {
+      display: none;
+    }
+    
+    .prose p {
+      max-width: 65ch;
+    }
+  </style>
+</head>
+<body class="gradient-bg min-h-screen text-gray-700 antialiased">
+  
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-card">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-3">
+          <div class="icon-gradient rounded-lg p-2 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <span class="text-xl font-bold text-gray-800">水印移除工具</span>
+        </div>
+        
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#features" class="text-gray-600 hover:text-brand-500 transition-colors font-medium">特性</a>
+          <a href="#how-it-works" class="text-gray-600 hover:text-brand-500 transition-colors font-medium">工作原理</a>
+          <a href="#demo" class="text-gray-600 hover:text-brand-500 transition-colors font-medium">运行方式</a>
+          <a href="#faq" class="text-gray-600 hover:text-brand-500 transition-colors font-medium">FAQ</a>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+          <a href="#" class="hidden sm:flex items-center space-x-2 text-gray-600 hover:text-brand-500 transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <span>GitHub</span>
+          </a>
+          <a href="#demo" class="bg-brand-500 hover:bg-brand-600 text-white px-6 py-2.5 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300">
+            开始使用
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center">
+        <div class="inline-block mb-6 px-4 py-2 bg-brand-500/10 rounded-full">
+          <span class="text-white font-semibold text-sm">基于 YOLO8 + IOPaint 的智能水印移除方案</span>
+        </div>
+        
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+          移除小红书logo水印的
+          <span class="text-gradient">智能演示项目</span>
+        </h1>
+        
+        <p class="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+          使用 ultralytics YOLO8 精准检测水印位置，结合 IOPaint 强大的图像修复能力，
+          实现自动化、高效率的水印移除。支持图片和视频处理，提供多种运行方式。
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <a href="#demo" class="w-full sm:w-auto bg-brand-500 hover:bg-brand-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center space-x-2">
+            <span>查看运行示例</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </a>
+          <a href="#how-it-works" class="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-700 px-8 py-4 rounded-xl font-semibold border-2 border-brand-200 hover:border-brand-300 transition-all duration-300 flex items-center justify-center space-x-2">
+            <svg class="w-5 h-5 text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            <span>了解工作原理</span>
+          </a>
+        </div>
+        
+        <!-- Tech Stack -->
+        <div class="mt-16 flex flex-wrap justify-center items-center gap-8 text-gray-500">
+          <div class="flex items-center space-x-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="font-medium">YOLO8 检测</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="font-medium">IOPaint 修复</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="font-medium">ONNX 优化</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="font-medium">Python 3.8+</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">核心特性</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">强大而灵活的水印移除解决方案</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Feature 1 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300">
+          <div class="icon-gradient rounded-xl w-14 h-14 flex items-center justify-center mb-6 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">智能检测</h3>
+          <p class="text-gray-600 leading-relaxed">使用 YOLO8 深度学习模型精准定位小红书水印位置，准确率高，适应性强</p>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300">
+          <div class="icon-gradient rounded-xl w-14 h-14 flex items-center justify-center mb-6 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">高质量修复</h3>
+          <p class="text-gray-600 leading-relaxed">基于 IOPaint 的先进图像修复算法，移除水印后保持图像自然清晰</p>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300">
+          <div class="icon-gradient rounded-xl w-14 h-14 flex items-center justify-center mb-6 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">ONNX 加速</h3>
+          <p class="text-gray-600 leading-relaxed">支持 ONNX 模型推理，大幅提升检测速度，适合批量处理任务</p>
+        </div>
+        
+        <!-- Feature 4 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300">
+          <div class="icon-gradient rounded-xl w-14 h-14 flex items-center justify-center mb-6 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">视频处理</h3>
+          <p class="text-gray-600 leading-relaxed">支持视频水印移除，自动处理每一帧并重新合成，保持音视频同步</p>
+        </div>
+        
+        <!-- Feature 5 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300">
+          <div class="icon-gradient rounded-xl w-14 h-14 flex items-center justify-center mb-6 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">API 模式</h3>
+          <p class="text-gray-600 leading-relaxed">支持 IOPaint API 调用模式，减少批量处理时的初始化开销</p>
+        </div>
+        
+        <!-- Feature 6 -->
+        <div class="glass-card rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300">
+          <div class="icon-gradient rounded-xl w-14 h-14 flex items-center justify-center mb-6 shadow-lg">
+            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">灵活部署</h3>
+          <p class="text-gray-600 leading-relaxed">支持 Dev Container 快速启动，也支持自定义虚拟环境和远程服务部署</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it Works -->
+  <section id="how-it-works" class="py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">工作流程</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">简单高效的处理流程</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Step 1 -->
+        <div class="text-center">
+          <div class="icon-gradient rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-xl">
+            <span class="text-3xl font-bold text-white">1</span>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">加载模型</h3>
+          <p class="text-gray-600">加载 YOLO8 训练好的水印检测模型 best.pt</p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="text-center">
+          <div class="icon-gradient rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-xl">
+            <span class="text-3xl font-bold text-white">2</span>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">检测位置</h3>
+          <p class="text-gray-600">YOLO8 模型识别并定位图片中的水印位置</p>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="text-center">
+          <div class="icon-gradient rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-xl">
+            <span class="text-3xl font-bold text-white">3</span>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">生成遮罩</h3>
+          <p class="text-gray-600">根据检测结果创建精确的遮罩区域</p>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="text-center">
+          <div class="icon-gradient rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 shadow-xl">
+            <span class="text-3xl font-bold text-white">4</span>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-3">修复输出</h3>
+          <p class="text-gray-600">IOPaint 基于遮罩进行智能修复，输出干净图像</p>
+        </div>
+      </div>
+      
+      <!-- Flow Diagram -->
+      <div class="mt-16 glass-card rounded-2xl p-8">
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-4">
+          <div class="text-center lg:text-left flex-1">
+            <div class="inline-block icon-gradient rounded-lg p-3 mb-3">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <p class="font-semibold text-gray-800">输入图像</p>
+          </div>
+          
+          <svg class="w-8 h-8 text-brand-500 transform rotate-0 lg:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+          
+          <div class="text-center flex-1">
+            <div class="inline-block icon-gradient rounded-lg p-3 mb-3">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <p class="font-semibold text-gray-800">YOLO8 检测</p>
+          </div>
+          
+          <svg class="w-8 h-8 text-brand-500 transform rotate-0 lg:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+          
+          <div class="text-center flex-1">
+            <div class="inline-block icon-gradient rounded-lg p-3 mb-3">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+              </svg>
+            </div>
+            <p class="font-semibold text-gray-800">创建遮罩</p>
+          </div>
+          
+          <svg class="w-8 h-8 text-brand-500 transform rotate-0 lg:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+          
+          <div class="text-center lg:text-right flex-1">
+            <div class="inline-block icon-gradient rounded-lg p-3 mb-3">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <p class="font-semibold text-gray-800">IOPaint 修复</p>
+          </div>
+          
+          <svg class="w-8 h-8 text-brand-500 transform rotate-0 lg:rotate-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+          </svg>
+          
+          <div class="text-center lg:text-right flex-1">
+            <div class="inline-block bg-green-500 rounded-lg p-3 mb-3">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <p class="font-semibold text-gray-800">输出结果</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo/Run Section -->
+  <section id="demo" class="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">运行方式</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">三种运行方式，满足不同需求</p>
+      </div>
+      
+      <div class="space-y-8">
+        <!-- Demo 1 -->
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="p-8">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="icon-gradient rounded-lg p-3">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">Demo 1: ultralytics + IOPaint (命令行方式)</h3>
+                  <p class="text-gray-600 text-sm mt-1">使用 PyTorch 模型，适合快速测试</p>
+                </div>
+              </div>
+              <span class="bg-gradient-to-br from-amber-500 to-amber-600 shadow-sm shadow-amber-500/30 text-brand-700 px-3 py-1 rounded-full text-sm font-semibold">推荐新手</span>
+            </div>
+            
+            <div class="bg-gray-900 rounded-lg p-4 mb-4">
+              <code class="text-green-400 text-sm">python remove_watermark.py</code>
+            </div>
+            
+            <p class="text-gray-600 mb-4">使用 <a href="https://github.com/ultralytics/ultralytics" class="text-white hover:underline">ultralytics YOLO8</a> 进行水印检测，配合 IOPaint 命令行工具进行修复。脚本：<a href="#" class="text-white hover:underline">remove_watermark.py</a></p>
+            
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">PyTorch</span>
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">命令行</span>
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">简单</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Demo 2 -->
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="p-8">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="icon-gradient rounded-lg p-3">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">Demo 2: onnxruntime + IOPaint (命令行方式)</h3>
+                  <p class="text-gray-600 text-sm mt-1">使用 ONNX 模型，推理速度更快</p>
+                </div>
+              </div>
+              <span class="bg-gradient-to-br from-amber-500 to-amber-600 shadow-sm shadow-amber-500/30 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold">推荐</span>
+            </div>
+            
+            <div class="bg-gray-900 rounded-lg p-4 mb-4">
+              <code class="text-green-400 text-sm">python remove_watermark_with_onnx.py</code>
+            </div>
+            
+            <p class="text-gray-600 mb-4">使用 ONNX Runtime 进行模型推理，速度更快，内存占用更少。支持 PT 模型自动转换为 ONNX 格式。脚本：<a href="#" class="text-white hover:underline">remove_watermark_with_onnx.py</a></p>
+            
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">ONNX</span>
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">高性能</span>
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">批量</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Demo 3 -->
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="p-8">
+            <div class="flex items-start justify-between mb-4">
+              <div class="flex items-center space-x-3">
+                <div class="icon-gradient rounded-lg p-3">
+                  <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-xl font-bold text-gray-900">Demo 3: 视频水印移除</h3>
+                  <p class="text-gray-600 text-sm mt-1">处理视频文件，逐帧移除水印</p>
+                </div>
+              </div>
+              <span class="bg-gradient-to-br from-amber-500 to-amber-600 shadow-sm shadow-amber-500/30 text-amber-700 px-3 py-1 rounded-full text-sm font-semibold">实验性</span>
+            </div>
+            
+            <div class="bg-gray-900 rounded-lg p-4 mb-4">
+              <code class="text-green-400 text-sm">python remove_watermark_video.py</code>
+            </div>
+            
+            <p class="text-gray-600 mb-4">支持视频水印移除，但处理时间较长（4秒测试视频约需291秒）。适合水印位置固定的场景，可复用遮罩优化。脚本：<a href="#" class="text-white hover:underline">remove_watermark_video.py</a></p>
+            
+            <div class="flex flex-wrap gap-2">
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">视频</span>
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">逐帧</span>
+              <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">耗时较长</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dependencies Section -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">关键依赖版本</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">当前开发环境使用的主要依赖</p>
+      </div>
+      
+      <div class="glass-card rounded-2xl p-8">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">python</span>
+              <span class="text-white font-semibold">3.8.18</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">torch</span>
+              <span class="text-white font-semibold">2.3.0+cu118</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">torchvision</span>
+              <span class="text-white font-semibold">0.18.0+cu118</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">ultralytics</span>
+              <span class="text-white font-semibold">8.2.26</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">IOPaint</span>
+              <span class="text-white font-semibold">1.3.3</span>
+            </div>
+          </div>
+          <div class="space-y-3">
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">onnxruntime_gpu</span>
+              <span class="text-white font-semibold">1.18.0</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">onnx</span>
+              <span class="text-white font-semibold">1.16.1</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">onnx-simplifier</span>
+              <span class="text-white font-semibold">0.4.36</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">onnxsim</span>
+              <span class="text-white font-semibold">0.4.36</span>
+            </div>
+            <div class="flex items-center justify-between p-3 bg-white rounded-lg">
+              <span class="font-mono text-gray-700">onnxslim</span>
+              <span class="text-white font-semibold">0.1.28</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Environment Setup -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">环境配置</h2>
+        <p class="text-xl text-gray-600 max-w-2xl mx-auto">快速启动开发环境</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Dev Container -->
+        <div class="glass-card rounded-2xl p-8">
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="icon-gradient rounded-lg p-3">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">Dev Container (推荐)</h3>
+          </div>
+          
+          <p class="text-gray-600 mb-4">使用 VS Code 的 Dev Containers 模式，一键启动完整开发环境。</p>
+          
+          <a href="#" class="inline-flex items-center text-white hover:text-brand-700 font-semibold">
+            查看配置说明
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+        
+        <!-- Manual Setup -->
+        <div class="glass-card rounded-2xl p-8">
+          <div class="flex items-center space-x-3 mb-6">
+            <div class="icon-gradient rounded-lg p-3">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900">手动配置 (可选)</h3>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="bg-white rounded-lg p-4">
+              <p class="text-sm text-gray-700 mb-2 font-semibold">安装 PyTorch (二选一)</p>
+              <div class="space-y-2">
+                <div class="bg-gray-900 rounded p-2">
+                  <code class="text-green-400 text-xs">pip install torch torchvision</code>
+                </div>
+                <div class="bg-gray-900 rounded p-2">
+                  <code class="text-green-400 text-xs">pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118</code>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-white rounded-lg p-4">
+              <p class="text-sm text-gray-700 mb-2 font-semibold">安装依赖</p>
+              <div class="bg-gray-900 rounded p-2">
+                <code class="text-green-400 text-xs">pip install -r requirements.txt</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">常见问题</h2>
+        <p class="text-xl text-gray-600">解答使用过程中的疑问</p>
+      </div>
+      
+      <div class="space-y-4">
+        <details class="glass-card rounded-xl overflow-hidden group">
+          <summary class="p-6 cursor-pointer flex items-center justify-between hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-gray-900">如何启用 IOPaint API 模式？</span>
+            <svg class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-gray-600">
+            <p>在 <code class="bg-gray-100 px-2 py-1 rounded text-sm">remove_watermark_with_onnx.py</code> 或 <code class="bg-gray-100 px-2 py-1 rounded text-sm">remove_watermark.py</code> 中设置 <code class="bg-gray-100 px-2 py-1 rounded text-sm">USE_IOPAINT_API=True</code>，然后启动 IOPaint 服务：<code class="bg-gray-100 px-2 py-1 rounded text-sm">python iopaint_server.py</code></p>
+          </div>
+        </details>
+        
+        <details class="glass-card rounded-xl overflow-hidden group">
+          <summary class="p-6 cursor-pointer flex items-center justify-between hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-gray-900">如何配置自定义的 IOPaint 服务地址？</span>
+            <svg class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-gray-600">
+            <p>可以通过环境变量 <code class="bg-gray-100 px-2 py-1 rounded text-sm">IOPAINT_SERVER_HOST</code> 配置，或在 <code class="bg-gray-100 px-2 py-1 rounded text-sm">iopaint_api_utils.py</code> 中直接修改 <code class="bg-gray-100 px-2 py-1 rounded text-sm">IOPAINT_SERVER_HOST</code> 常量。</p>
+          </div>
+        </details>
+        
+        <details class="glass-card rounded-xl overflow-hidden group">
+          <summary class="p-6 cursor-pointer flex items-center justify-between hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-gray-900">遇到 zlibwapi.dll 错误怎么办？</span>
+            <svg class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-gray-600">
+            <p>需要下载相关的 DLL 文件并放置到 CUDA 目录：</p>
+            <ul class="list-disc list-inside mt-2 space-y-1">
+              <li>lib 文件放到 <code class="bg-gray-100 px-2 py-1 rounded text-sm">C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\lib</code></li>
+              <li>dll 文件放到 <code class="bg-gray-100 px-2 py-1 rounded text-sm">C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.x\bin</code></li>
+            </ul>
+            <p class="mt-2 text-sm text-gray-500">百度网盘下载：提取码 6cgb</p>
+          </div>
+        </details>
+        
+        <details class="glass-card rounded-xl overflow-hidden group">
+          <summary class="p-6 cursor-pointer flex items-center justify-between hover:bg-gray-50 transition-colors">
+            <span class="font-semibold text-gray-900">视频处理为什么这么慢？</span>
+            <svg class="w-5 h-5 text-gray-500 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div class="px-6 pb-6 text-gray-600">
+            <p>4秒测试视频（143帧）使用 IOPaint 批量移除水印耗时约280秒。如果水印位置固定，可以优化为使用单一遮罩而非为每帧创建遮罩，大幅减少处理时间。</p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="py-20 px-4 sm:px-6 lg:px-8 bg-white/50">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">处理效果对比</h2>
+        <p class="text-xl text-gray-600">水印移除前后对比</p>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="bg-gray-100 p-4 text-center">
+            <p class="font-semibold text-gray-800">处理前</p>
+          </div>
+          <div class="p-8 bg-gray-50 flex items-center justify-center min-h-[200px]">
+            <div class="text-center text-gray-400">
+              <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+              <p class="text-sm">原始图片（带水印）</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="glass-card rounded-2xl overflow-hidden">
+          <div class="bg-brand-50 p-4 text-center">
+            <p class="font-semibold text-brand-800">处理后</p>
+          </div>
+          <div class="p-8 bg-white flex items-center justify-center min-h-[200px]">
+            <div class="text-center text-gray-400">
+              <svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <p class="text-sm">干净图片（水印已移除）</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-12 text-center">
+        <p class="text-gray-600 mb-6">完整对比视频和截图请查看项目 GitHub 页面</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="#" class="inline-flex items-center space-x-2 text-white hover:text-brand-700 font-semibold">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            <span>查看完整效果</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-4 sm:px-6 lg:px-8 bg-gray-900 text-gray-300">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="icon-gradient rounded-lg p-2">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-white">水印移除工具</span>
+          </div>
+          <p class="text-sm">基于 YOLO8 + IOPaint 的智能水印移除方案</p>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-white mb-4">相关项目</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="https://github.com/ultralytics/ultralytics" class="hover:text-brand-400 transition-colors">ultralytics YOLO8</a></li>
+            <li><a href="https://github.com/Sanster/IOPaint" class="hover:text-brand-400 transition-colors">IOPaint</a></li>
+            <li><a href="https://github.com/Samge0/yolo8-watermark-xhs" class="hover:text-brand-400 transition-colors">yolo8-watermark-xhs</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-semibold text-white mb-4">许可证</h4>
+          <div class="flex items-center space-x-2 text-sm">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>MIT License</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-sm">&copy; 2024 remove-watermark-xhs. All rights reserved.</p>
+        <div class="flex space-x-6 mt-4 md:mt-0">
+          <a href="#" class="text-gray-400 hover:text-white transition-colors">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+    
+    // Mobile menu toggle (if needed)
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (mobileMenuBtn && mobileMenu) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+  </script>
+</body>
+</html>

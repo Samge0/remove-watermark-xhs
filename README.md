@@ -2,6 +2,9 @@
 
 本demo使用[ultralytics-YOLO8](https://github.com/ultralytics/ultralytics)对水印位置进行检测，然后使用[IOPaint](https://github.com/Sanster/IOPaint)移除yolo识别的目标水印。
 
+
+> 🌐 **[在线宣传页](https://samge0.github.io/remove-watermark-xhs/)** — 可视化了解功能特性与工作流程
+
 本demo中使用的[best.pt](models/best.pt)模型来自[yolo8-watermark-xhs](https://github.com/Samge0/yolo8-watermark-xhs)仓库。
 
 本demo支持使用iopaint的api方式去除水印，只需在[remove_watermark_with_onnx.py](remove_watermark_with_onnx.py) 或 [remove_watermark.py](remove_watermark.py)中配置`USE_IOPAINT_API=True`，可减少批量操作时iopaint命令行方式的初始化耗时。
